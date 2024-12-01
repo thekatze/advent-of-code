@@ -3,21 +3,16 @@ use std::collections::BTreeMap;
 pub struct Parsed(Vec<u32>, Vec<u32>);
 
 pub fn parse(input: &str) -> Parsed {
-    let numbers = input.lines().map(|line| {
-        let (l, r) = line.split_once("   ").expect("invalid input format");
-        (
-            l.parse::<u32>().expect("input not a number"),
-            r.parse::<u32>().expect("input not a number"),
-        )
-    });
-
-    let mut left = Vec::new();
-    let mut right = Vec::new();
-
-    for (l, r) in numbers {
-        left.push(l);
-        right.push(r);
-    }
+    let (left, right) = input
+        .lines()
+        .map(|line| {
+            let (l, r) = line.split_once("   ").expect("invalid input format");
+            (
+                l.parse::<u32>().expect("input not a number"),
+                r.parse::<u32>().expect("input not a number"),
+            )
+        })
+        .unzip();
 
     Parsed(left, right)
 }

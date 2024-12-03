@@ -26,14 +26,18 @@ pub fn part2(input: &Parsed) -> String {
     // capturing the opening and closing brackets of do and don't because i need to capture two
     // things in every case lol
     let actions =
-        Regex::new(r"mul\((\d{1,3}),(\d{1,3})\)|don't(\()(\))|do(\()(\))").expect("invalid regex");
+        Regex::new(r"mul\((\d{1,3}),(\d{1,3})\)|don't\(\)|do\(\)").expect("invalid regex");
 
     let mut should_add = true;
 
     actions
         .captures_iter(&input.0)
         .map(|capture| {
-            let (substring, params): (_, [_; 2]) = capture.extract();
+            let substring = capture
+                .get(0)
+                .expect("get(0) is guaranteed to return a value")
+                .as_str();
+
             if substring == "do()" {
                 should_add = true;
                 return 0;
@@ -46,12 +50,14 @@ pub fn part2(input: &Parsed) -> String {
                 return 0;
             }
 
-            let lhs = params[0]
-                .parse::<u32>()
-                .expect("mul parameter should be number");
-            let rhs = params[1]
-                .parse::<u32>()
-                .expect("mul parameter should be number");
+            let (lhs, rhs) = (
+                capture.get(1).expect("mul requires parameters").as_str(),
+                capture.get(2).expect("mul requires parameters").as_str(),
+            );
+
+            let lhs = lhs.parse::<u32>().expect("mul parameter should be number");
+            let rhs = rhs.parse::<u32>().expect("mul parameter should be number");
+
             lhs * rhs
         })
         .sum::<u32>()

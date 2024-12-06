@@ -1,3 +1,4 @@
+use rayon::prelude::*;
 use std::collections::HashSet;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -114,14 +115,12 @@ pub fn part2(input: &Map) -> String {
     map.walk();
 
     map.tiles
-        .iter()
+        .par_iter()
         .enumerate()
         .filter(|(_, tile)| **tile == Tile::Visited)
         .map(|(i, _)| i)
         .filter(|new_obstacle_index| {
-            if *new_obstacle_index == input.character_position
-                || input.tiles[*new_obstacle_index] == Tile::Obstructed
-            {
+            if *new_obstacle_index == input.character_position {
                 return false;
             }
 

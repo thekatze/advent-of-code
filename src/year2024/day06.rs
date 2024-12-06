@@ -110,7 +110,14 @@ pub fn part1(input: &Map) -> String {
 }
 
 pub fn part2(input: &Map) -> String {
-    (0..input.width * input.height)
+    let mut map = input.clone();
+    map.walk();
+
+    map.tiles
+        .iter()
+        .enumerate()
+        .filter(|(_, tile)| **tile == Tile::Visited)
+        .map(|(i, _)| i)
         .filter(|new_obstacle_index| {
             if *new_obstacle_index == input.character_position
                 || input.tiles[*new_obstacle_index] == Tile::Obstructed

@@ -27,7 +27,7 @@ impl PartialEquation {
                     .fold(self.numbers[0], |acc, (op, num)| match op {
                         Operation::Add => acc + num,
                         Operation::Multiply => acc * num,
-                        Operation::Concatenate => format!("{acc}{num}").parse().expect("number"),
+                        Operation::Concatenate => acc * 10u64.pow(num.ilog10() + 1) + num, // nice: https://www.reddit.com/r/rust/comments/191l3ot/concatinate_two_numbers/
                     });
 
                 equation_result == self.result

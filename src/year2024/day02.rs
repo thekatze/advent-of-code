@@ -38,15 +38,10 @@ pub fn parse(input: &str) -> Parsed {
     )
 }
 
-pub fn part1(input: &Parsed) -> String {
-    input
-        .0
-        .iter()
-        .filter(|report| report.is_safe())
-        .count()
-        .to_string()
+pub fn part1(input: &Parsed) -> u64 {
+    input.0.iter().filter(|report| report.is_safe()).count() as u64
 }
-pub fn part2(input: &Parsed) -> String {
+pub fn part2(input: &Parsed) -> u64 {
     input
         .0
         .iter()
@@ -62,8 +57,7 @@ pub fn part2(input: &Parsed) -> String {
 
             false
         })
-        .count()
-        .to_string()
+        .count() as u64
 }
 
 #[cfg(test)]
@@ -80,12 +74,12 @@ mod tests {
     #[test]
     fn part1() {
         let result = super::part1(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "2")
+        assert_eq!(result, 2)
     }
 
     #[test]
     fn part2() {
         let result = super::part2(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "4")
+        assert_eq!(result, 4)
     }
 }

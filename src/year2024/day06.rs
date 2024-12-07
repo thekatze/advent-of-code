@@ -99,18 +99,17 @@ pub fn parse(input: &str) -> Map {
     }
 }
 
-pub fn part1(input: &Map) -> String {
+pub fn part1(input: &Map) -> u64 {
     let mut map = input.clone();
     map.walk();
 
     map.tiles
         .iter()
         .filter(|tile| **tile == Tile::Visited)
-        .count()
-        .to_string()
+        .count() as u64
 }
 
-pub fn part2(input: &Map) -> String {
+pub fn part2(input: &Map) -> u64 {
     let mut map = input.clone();
     map.walk();
 
@@ -129,8 +128,7 @@ pub fn part2(input: &Map) -> String {
 
             !map.walk()
         })
-        .count()
-        .to_string()
+        .count() as u64
 }
 
 #[cfg(test)]
@@ -151,12 +149,12 @@ mod tests {
     #[test]
     fn part1() {
         let result = super::part1(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "41")
+        assert_eq!(result, 41)
     }
 
     #[test]
     fn part2() {
         let result = super::part2(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "6")
+        assert_eq!(result, 6)
     }
 }

@@ -6,23 +6,22 @@ pub fn parse(input: &str) -> Parsed {
     Parsed(input.to_owned()) // dont know what i need to parse yet, just pass the string
 }
 
-pub fn part1(input: &Parsed) -> String {
+pub fn part1(input: &Parsed) -> u64 {
     let muls = Regex::new(r"mul\((\d{1,3}),(\d{1,3})\)").expect("invalid regex");
     muls.captures_iter(&input.0)
         .map(|capture| {
             let (_, params): (_, [_; 2]) = capture.extract();
             let lhs = params[0]
-                .parse::<u32>()
+                .parse::<u64>()
                 .expect("mul parameter should be number");
             let rhs = params[1]
-                .parse::<u32>()
+                .parse::<u64>()
                 .expect("mul parameter should be number");
             lhs * rhs
         })
-        .sum::<u32>()
-        .to_string()
+        .sum()
 }
-pub fn part2(input: &Parsed) -> String {
+pub fn part2(input: &Parsed) -> u64 {
     // capturing the opening and closing brackets of do and don't because i need to capture two
     // things in every case lol
     let actions =
@@ -55,13 +54,12 @@ pub fn part2(input: &Parsed) -> String {
                 capture.get(2).expect("mul requires parameters").as_str(),
             );
 
-            let lhs = lhs.parse::<u32>().expect("mul parameter should be number");
-            let rhs = rhs.parse::<u32>().expect("mul parameter should be number");
+            let lhs = lhs.parse::<u64>().expect("mul parameter should be number");
+            let rhs = rhs.parse::<u64>().expect("mul parameter should be number");
 
             lhs * rhs
         })
-        .sum::<u32>()
-        .to_string()
+        .sum()
 }
 
 #[cfg(test)]
@@ -77,12 +75,12 @@ mod tests {
     #[test]
     fn part1() {
         let result = super::part1(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "161")
+        assert_eq!(result, 161)
     }
 
     #[test]
     fn part2() {
         let result = super::part2(&parse(SAMPLE_INPUT_2));
-        assert_eq!(result, "48")
+        assert_eq!(result, 48)
     }
 }

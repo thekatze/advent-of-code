@@ -12,7 +12,7 @@ pub fn parse(input: &str) -> Parsed {
     Parsed(input.replace("\n", ""), width, height)
 }
 
-pub fn part1(input: &Parsed) -> String {
+pub fn part1(input: &Parsed) -> u64 {
     const NEEDLE_LEN: usize = 4;
     let needles = ["XMAS", "SAMX"];
 
@@ -72,11 +72,10 @@ pub fn part1(input: &Parsed) -> String {
 
             count
         })
-        .sum::<u32>()
-        .to_string()
+        .sum()
 }
 
-pub fn part2(input: &Parsed) -> String {
+pub fn part2(input: &Parsed) -> u64 {
     let (grid, width, height) = (&input.0, input.1, input.2);
 
     // as_bytes because we're not doing unicode shenanigans here
@@ -116,8 +115,7 @@ pub fn part2(input: &Parsed) -> String {
                 0
             }
         })
-        .sum::<u32>()
-        .to_string()
+        .sum()
 }
 
 #[cfg(test)]
@@ -138,12 +136,12 @@ MXMXAXMASX";
     #[test]
     fn part1() {
         let result = super::part1(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "18")
+        assert_eq!(result, 18)
     }
 
     #[test]
     fn part2() {
         let result = super::part2(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "9")
+        assert_eq!(result, 9)
     }
 }

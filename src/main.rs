@@ -136,8 +136,8 @@ impl Solution {
 
 pub struct RunResult {
     parse_time: Duration,
-    part1: (Duration, String),
-    part2: (Duration, String),
+    part1: (Duration, u64),
+    part2: (Duration, u64),
 }
 
 impl Display for RunResult {

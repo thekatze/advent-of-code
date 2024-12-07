@@ -1,7 +1,7 @@
 #[derive(Debug)]
-pub struct PageOrderRule(u32, u32);
+pub struct PageOrderRule(u64, u64);
 #[derive(Clone, Debug)]
-pub struct PageUpdate(Vec<u32>);
+pub struct PageUpdate(Vec<u64>);
 
 #[derive(Debug)]
 pub struct Parsed {
@@ -42,7 +42,7 @@ pub fn parse(input: &str) -> Parsed {
 }
 
 impl PageOrderRule {
-    fn is_valid_list(&self, list: &[u32]) -> bool {
+    fn is_valid_list(&self, list: &[u64]) -> bool {
         let (first, second) = (self.0, self.1);
 
         let first_index = list.iter().position(|num| *num == first);
@@ -55,7 +55,7 @@ impl PageOrderRule {
     }
 
     // TODO: refactor part 1 to use is_valid_list
-    fn is_valid(&self, previous_numbers: &[u32], next: u32) -> bool {
+    fn is_valid(&self, previous_numbers: &[u64], next: u64) -> bool {
         let (first, second) = (self.0, self.1);
 
         let rule_success = previous_numbers
@@ -72,7 +72,7 @@ impl PageOrderRule {
 
 impl PageUpdate {
     fn valid_order(&self, rules: &[PageOrderRule]) -> bool {
-        let mut numbers_inserted: &[u32] = &self.0[..0];
+        let mut numbers_inserted: &[u64] = &self.0[..0];
 
         self.0.iter().all(|num| {
             let valid_insert = rules
@@ -88,7 +88,7 @@ impl PageUpdate {
     }
 
     fn to_fixed(&self, rules: &[PageOrderRule]) -> Self {
-        let mut fixed: Vec<u32> = Vec::with_capacity(self.0.len());
+        let mut fixed: Vec<u64> = Vec::with_capacity(self.0.len());
 
         while fixed.len() != self.0.len() {
             let next = self.0[fixed.len()];
@@ -114,30 +114,28 @@ impl PageUpdate {
         PageUpdate(fixed)
     }
 
-    fn get_middle(&self) -> u32 {
+    fn get_middle(&self) -> u64 {
         let middle_index = self.0.len() / 2;
         self.0[middle_index]
     }
 }
 
-pub fn part1(input: &Parsed) -> String {
+pub fn part1(input: &Parsed) -> u64 {
     input
         .page_updates
         .iter()
         .filter(|&update| update.valid_order(&input.page_orders))
         .map(|update| update.get_middle())
-        .sum::<u32>()
-        .to_string()
+        .sum()
 }
 
-pub fn part2(input: &Parsed) -> String {
+pub fn part2(input: &Parsed) -> u64 {
     input
         .page_updates
         .iter()
         .filter(|update| !update.valid_order(&input.page_orders))
         .map(|update| update.to_fixed(&input.page_orders).get_middle())
-        .sum::<u32>()
-        .to_string()
+        .sum()
 }
 
 #[cfg(test)]
@@ -176,12 +174,12 @@ mod tests {
     #[test]
     fn part1() {
         let result = super::part1(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "143")
+        assert_eq!(result, 143)
     }
 
     #[test]
     fn part2() {
         let result = super::part2(&parse(SAMPLE_INPUT));
-        assert_eq!(result, "123")
+        assert_eq!(result, 123)
     }
 }

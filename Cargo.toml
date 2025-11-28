@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-anyhow = "1.0.93"
-itertools = "0.13.0"
-rayon = "1.10.0"
-regex = "1.11.1"
+anyhow = "1.0.100"
+clap = { version = "4.5.53", features = ["derive"] }
+itertools = "0.14.0"
+owo-colors = "4.2.3"
+pastey = "0.2.0"
+rayon = "1.11.0"
+regex = "1.12.2"

@@ -62,10 +62,6 @@ impl PageOrderRule {
             .iter()
             .all(|previous| !(next == first && *previous == second));
 
-        if !rule_success {
-            println!("Rule failed: {:?}: Next: {}", self, next);
-        }
-
         rule_success
     }
 }
@@ -108,8 +104,6 @@ impl PageUpdate {
                 fixed.swap(left, right);
             }
         }
-
-        dbg!(&fixed);
 
         PageUpdate(fixed)
     }

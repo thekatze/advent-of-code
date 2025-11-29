@@ -58,11 +58,9 @@ impl PageOrderRule {
     fn is_valid(&self, previous_numbers: &[u64], next: u64) -> bool {
         let (first, second) = (self.0, self.1);
 
-        let rule_success = previous_numbers
+        previous_numbers
             .iter()
-            .all(|previous| !(next == first && *previous == second));
-
-        rule_success
+            .all(|previous| !(next == first && *previous == second))
     }
 }
 

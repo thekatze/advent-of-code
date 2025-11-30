@@ -1,25 +1,27 @@
-pub struct Parsed<'a>(&'a str);
+pub struct Parsed<'a>(&'a [u8]);
 
 pub fn parse(input: &str) -> Parsed<'_> {
-    Parsed(input)
+    let bytes = input.as_bytes();
+
+    // remove final newline
+    // when we split by \n the final newline will yield an empty slice
+    Parsed(&bytes[..bytes.len() - 1])
 }
 
 pub fn part1(input: &Parsed) -> u64 {
     input
         .0
-        .lines()
+        .split(|b| *b == b'\n')
         .map(|line| {
             let left_digit: u64 = line
-                .chars()
-                .find_map(|c: char| c.to_digit(10))
-                .unwrap_or(0)
-                .into();
+                .iter()
+                .find_map(|c: &u8| c.is_ascii_digit().then(|| u64::from(c - b'0')))
+                .unwrap_or(0);
             let right_digit: u64 = line
-                .chars()
+                .iter()
                 .rev()
-                .find_map(|c: char| c.to_digit(10))
-                .unwrap_or(0)
-                .into();
+                .find_map(|c: &u8| c.is_ascii_digit().then(|| u64::from(c - b'0')))
+                .unwrap_or(0);
 
             left_digit * 10 + right_digit
         })
@@ -27,29 +29,32 @@ pub fn part1(input: &Parsed) -> u64 {
 }
 
 pub fn part2(input: &Parsed) -> u64 {
-    let digits = [
-        ("one", 1),
-        ("two", 2),
-        ("three", 3),
-        ("four", 4),
-        ("five", 5),
-        ("six", 6),
-        ("seven", 7),
-        ("eight", 8),
-        ("nine", 9),
+    let digits: [(&[u8], u64); _] = [
+        (b"one", 1),
+        (b"two", 2),
+        (b"three", 3),
+        (b"four", 4),
+        (b"five", 5),
+        (b"six", 6),
+        (b"seven", 7),
+        (b"eight", 8),
+        (b"nine", 9),
     ];
 
     input
         .0
-        .lines()
+        .split(|b| *b == b'\n')
         .map(|line| {
             let mut at = 0;
             let left_digit = loop {
                 let mut from_left = &line[at..];
                 assert!(!from_left.is_empty());
 
-                if let Some(actual_digit) = from_left.chars().next().and_then(|c| c.to_digit(10)) {
-                    break actual_digit.into();
+                if let Some(actual_digit) = from_left
+                    .first()
+                    .and_then(|c: &u8| c.is_ascii_digit().then(|| u64::from(c - b'0')))
+                {
+                    break actual_digit;
                 }
 
                 if let Some(text_digit) = digits
@@ -67,10 +72,11 @@ pub fn part2(input: &Parsed) -> u64 {
                 let mut from_right = &line[..line.len() - at];
                 assert!(!from_right.is_empty());
 
-                if let Some(actual_digit) =
-                    from_right.chars().next_back().and_then(|c| c.to_digit(10))
+                if let Some(actual_digit) = from_right
+                    .last()
+                    .and_then(|c: &u8| c.is_ascii_digit().then(|| u64::from(c - b'0')))
                 {
-                    break actual_digit.into();
+                    break actual_digit;
                 }
 
                 if let Some(text_digit) = digits

@@ -12,6 +12,7 @@ use anyhow::Context;
 use clap::{Parser, Subcommand};
 use owo_colors::{OwoColorize as _, Style};
 
+pub mod year2023;
 pub mod year2024;
 
 macro_rules! solution {
@@ -44,6 +45,9 @@ macro_rules! solution {
 
 fn get_solutions() -> HashMap<AoCDate, Solution> {
     HashMap::from_iter([
+        // 2023
+        solution!(2023, 01),
+        // 2024
         solution!(2024, 01),
         solution!(2024, 02),
         solution!(2024, 03),

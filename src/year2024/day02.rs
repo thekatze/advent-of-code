@@ -1,5 +1,3 @@
-use std::ops::Deref as _;
-
 #[derive(Clone)]
 struct Report(Vec<u32>);
 

@@ -114,9 +114,9 @@ pub fn part2(input: &Map) -> u64 {
     map.walk();
 
     map.tiles
-        .par_iter()
+        .into_par_iter()
         .enumerate()
-        .filter(|(_, tile)| **tile == Tile::Visited)
+        .filter(|(_, tile)| *tile == Tile::Visited)
         .map(|(i, _)| i)
         .filter(|new_obstacle_index| {
             if *new_obstacle_index == input.character_position {

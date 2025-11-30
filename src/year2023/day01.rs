@@ -48,9 +48,7 @@ pub fn part2(input: &Parsed) -> u64 {
                 let mut from_left = &line[at..];
                 assert!(!from_left.is_empty());
 
-                if let Some(actual_digit) =
-                    from_left.chars().next().map(|c| c.to_digit(10)).flatten()
-                {
+                if let Some(actual_digit) = from_left.chars().next().and_then(|c| c.to_digit(10)) {
                     break actual_digit.into();
                 }
 
@@ -69,12 +67,8 @@ pub fn part2(input: &Parsed) -> u64 {
                 let mut from_right = &line[..line.len() - at];
                 assert!(!from_right.is_empty());
 
-                if let Some(actual_digit) = from_right
-                    .chars()
-                    .rev()
-                    .next()
-                    .map(|c| c.to_digit(10))
-                    .flatten()
+                if let Some(actual_digit) =
+                    from_right.chars().next_back().and_then(|c| c.to_digit(10))
                 {
                     break actual_digit.into();
                 }

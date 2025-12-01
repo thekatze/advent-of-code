@@ -12,3 +12,6 @@ owo-colors = "4.2.3"
 pastey = "0.2.0"
 rayon = "1.11.0"
 regex = "1.12.2"
+
+[profile.release]
+debug = true

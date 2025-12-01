@@ -14,6 +14,7 @@ use owo_colors::{OwoColorize as _, Style};
 
 pub mod year2023;
 pub mod year2024;
+pub mod year2025;
 
 macro_rules! solution {
     ($year:tt, $day:tt) => {{
@@ -57,6 +58,8 @@ fn get_solutions() -> HashMap<AoCDate, Solution> {
         solution!(2024, 07),
         solution!(2024, 08),
         // solution!(2024, 09) -- not finished,
+        // 2025
+        solution!(2025, 01),
     ])
 }
 

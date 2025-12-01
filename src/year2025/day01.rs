@@ -4,13 +4,13 @@ enum Rotation {
     Right(i32),
 }
 
-fn try_parse_rotation(value: &str) -> Result<i32, ()> {
-    let (direction, amount) = value.split_at(1);
-    let amount: i32 = amount.parse().map_err(|_| ())?;
+fn try_parse_rotation(value: &[u8]) -> Result<i32, ()> {
+    let (direction, amount) = value.split_first_chunk::<1>().ok_or(())?;
+    let amount: i32 = atoi::atoi(amount).ok_or(())?;
 
     match direction {
-        "L" => Ok(-amount),
-        "R" => Ok(amount),
+        [b'L'] => Ok(-amount),
+        [b'R'] => Ok(amount),
         _ => Err(()),
     }
 }
@@ -20,8 +20,11 @@ pub struct Parsed(Vec<i32>);
 pub fn parse(input: &str) -> Parsed {
     Parsed(
         input
-            .lines()
-            .map(|line| try_parse_rotation(line).expect("line not a rotation"))
+            .as_bytes()
+            .split(|c| *c == b'\n')
+            .filter_map(|line| {
+                (!line.is_empty()).then(|| try_parse_rotation(line).expect("line not a rotation"))
+            })
             .collect(),
     )
 }
@@ -105,7 +108,8 @@ L82";
             super::part2(&parse(
                 r"L26
 L24
-L122",
+L122
+",
             )),
             2
         );

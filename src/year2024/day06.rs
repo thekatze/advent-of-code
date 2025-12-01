@@ -17,7 +17,7 @@ enum Tile {
 }
 
 #[derive(Clone, Debug)]
-pub struct Map {
+pub struct Parsed {
     tiles: Vec<Tile>,
     character_position: usize,
     heading: Heading,
@@ -25,7 +25,7 @@ pub struct Map {
     height: usize,
 }
 
-impl Map {
+impl Parsed {
     fn get_next_position(&self) -> Option<usize> {
         let x = self.character_position % self.width;
         let y = self.character_position / self.width;
@@ -64,7 +64,7 @@ impl Map {
     }
 }
 
-pub fn parse(input: &str) -> Map {
+pub fn parse(input: &str) -> Parsed {
     let height = input.lines().count();
     let width = input.lines().next().expect("min one line").len();
 
@@ -90,7 +90,7 @@ pub fn parse(input: &str) -> Map {
         })
         .collect();
 
-    Map {
+    Parsed {
         tiles,
         character_position: character_position.expect("map must have starting pos"),
         heading: Heading::North,
@@ -99,7 +99,7 @@ pub fn parse(input: &str) -> Map {
     }
 }
 
-pub fn part1(input: &Map) -> u64 {
+pub fn part1(input: &Parsed) -> u64 {
     let mut map = input.clone();
     map.walk();
 
@@ -109,7 +109,7 @@ pub fn part1(input: &Map) -> u64 {
         .count() as u64
 }
 
-pub fn part2(input: &Map) -> u64 {
+pub fn part2(input: &Parsed) -> u64 {
     let mut map = input.clone();
     map.walk();
 

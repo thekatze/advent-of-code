@@ -42,7 +42,6 @@ pub fn part1(input: &Parsed) -> u64 {
         .count() as u64
 }
 
-#[inline(never)]
 pub fn part2(input: &Parsed) -> u64 {
     let mut dial = 50;
 

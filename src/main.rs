@@ -23,14 +23,19 @@ macro_rules! solution {
                 use [<year $year>]::[<day $day>]::*;
             }
 
+            // coerce to function pointers so they don't get inlined
+            let parse_fn: fn(&str) -> Parsed = std::hint::black_box(parse);
+            let part1_fn: fn(&Parsed) -> u64 = std::hint::black_box(part1);
+            let part2_fn: fn(&Parsed) -> u64 = std::hint::black_box(part2);
+
             let parse_start = Instant::now();
-            let input = parse(&data);
+            let input = parse_fn(&data);
             let parse_end = Instant::now();
 
-            let part1 = part1(&input);
+            let part1 = part1_fn(&input);
             let part1_end = Instant::now();
 
-            let part2 = part2(&input);
+            let part2 = part2_fn(&input);
             let part2_end = Instant::now();
 
             RunResult {

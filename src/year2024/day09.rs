@@ -1,7 +1,7 @@
-pub struct Filesystem(Vec<Option<u64>>);
+pub struct Parsed(Vec<Option<u64>>);
 
-pub fn parse(input: &str) -> Filesystem {
-    Filesystem(
+pub fn parse(input: &str) -> Parsed {
+    Parsed(
         input
             .lines()
             .next()
@@ -20,7 +20,7 @@ pub fn parse(input: &str) -> Filesystem {
     )
 }
 
-impl Filesystem {
+impl Parsed {
     fn to_defragmented(&self) -> Self {
         let mut defragmented = self.0.clone();
         let mut left_index = 0;
@@ -41,7 +41,7 @@ impl Filesystem {
         // we swap one too many time at the end. unswap
         defragmented.swap(left_index, right_index);
 
-        Filesystem(defragmented)
+        Parsed(defragmented)
     }
 
     fn to_defragmented_files(&self) -> Self {
@@ -102,10 +102,10 @@ impl Filesystem {
     }
 }
 
-pub fn part1(input: &Filesystem) -> u64 {
+pub fn part1(input: &Parsed) -> u64 {
     input.to_defragmented().checksum()
 }
-pub fn part2(input: &Filesystem) -> u64 {
+pub fn part2(input: &Parsed) -> u64 {
     0
     // input.to_defragmented_files().checksum();
 }

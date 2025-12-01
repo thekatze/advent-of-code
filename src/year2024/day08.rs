@@ -6,13 +6,13 @@ use itertools::Itertools as _;
 pub struct Position(i64, i64);
 
 pub struct Antennas(Vec<Position>);
-pub struct Grid {
+pub struct Parsed {
     width: i64,
     height: i64,
     antennas: BTreeMap<char, Antennas>,
 }
 
-pub fn parse(input: &str) -> Grid {
+pub fn parse(input: &str) -> Parsed {
     let mut antennas: BTreeMap<char, Antennas> = BTreeMap::new();
 
     let characters_in_input = input
@@ -32,7 +32,7 @@ pub fn parse(input: &str) -> Grid {
             .or_insert_with(|| Antennas(vec![Position(x as i64, y as i64)]));
     }
 
-    Grid {
+    Parsed {
         width: input.lines().next().expect("one line").len() as i64,
         height: input.lines().count() as i64,
         antennas,
@@ -74,7 +74,7 @@ impl Antennas {
     }
 }
 
-pub fn part1(input: &Grid) -> u64 {
+pub fn part1(input: &Parsed) -> u64 {
     input
         .antennas
         .iter()
@@ -82,7 +82,7 @@ pub fn part1(input: &Grid) -> u64 {
         .unique()
         .count() as u64
 }
-pub fn part2(input: &Grid) -> u64 {
+pub fn part2(input: &Parsed) -> u64 {
     input
         .antennas
         .iter()

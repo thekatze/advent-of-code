@@ -42,6 +42,7 @@ pub fn part1(input: &Parsed) -> u64 {
         .count() as u64
 }
 
+#[inline(never)]
 pub fn part2(input: &Parsed) -> u64 {
     let mut dial = 50;
 
@@ -49,25 +50,32 @@ pub fn part2(input: &Parsed) -> u64 {
         .0
         .iter()
         .map(|rotation| {
-            let old_dial = dial;
-            let old_dial_f32 = dial as f32;
+            let previous_dial = dial;
             dial += *rotation;
 
-            let dial_f32 = dial as f32;
+            let mut clicks = ((previous_dial as f32 / 100.0).floor()
+                - ((dial as f32 / 100.0).floor()))
+            .abs() as u64;
 
-            let mut clicks = ((old_dial_f32 / 100.0).floor() - ((dial_f32 / 100.0).floor())).abs();
+            // NOTE: the compiler can optimize the following code to conditional moves.
+            // the explicit form looks like this:
+            //
+            // let negative = rotation.is_negative() as i32;
+            // let landed_on_zero = (dial % 100 == 0) as i32;
+            // let started_on_zero = (previous_dial % 100 == 0) as i32;
+            // return (clicks + negative * (landed_on_zero - started_on_zero)) as u64;
 
             // do click if we land on 0 from turning left
             if rotation.is_negative() && dial % 100 == 0 {
-                clicks += 1.0;
+                clicks += 1;
             }
 
             // don't click if we start from 0 and turn left
-            if rotation.is_negative() && old_dial % 100 == 0 {
-                clicks -= 1.0;
+            if rotation.is_negative() && previous_dial % 100 == 0 {
+                clicks -= 1;
             }
 
-            clicks as u64
+            clicks
         })
         .sum()
 }

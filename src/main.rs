@@ -65,6 +65,7 @@ fn get_solutions() -> HashMap<AoCDate, Solution> {
         // solution!(2024, 09) -- not finished,
         // 2025
         solution!(2025, 01),
+        solution!(2025, 02),
     ])
 }
 

@@ -66,6 +66,7 @@ fn get_solutions() -> HashMap<AoCDate, Solution> {
         // 2025
         solution!(2025, 01),
         solution!(2025, 02),
+        solution!(2025, 03),
     ])
 }
 
